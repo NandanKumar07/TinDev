@@ -1,9 +1,14 @@
-const mongoose = require("mongoose");
+require('dotenv').config();
+const mongoose = require('mongoose');
 
-const DBconnect = async () => {
-  await mongoose.connect(
-    "mongodb+srv://onlinestudy641:6eeDOWBA354A320u@cluster0.9kspm.mongodb.net/tindev"
-  );
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {}); // No extra options needed
+        console.log('✅ MongoDB Connected...');
+    } catch (err) {
+        console.error('❌ MongoDB Connection Error:', err.message);
+        process.exit(1);
+    }
 };
 
-module.exports = DBconnect;
+module.exports = connectDB;
