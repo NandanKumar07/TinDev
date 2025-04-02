@@ -4,6 +4,7 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
+import Error from "./components/error";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
             <Route path="/login" element = {<Login/>}/>
             <Route path="/profile" element = {<Profile/>}/>
           </Route>
+          <Route path="/error" element = {<Error/>}/>
         </Routes>
       </BrowserRouter>
     </div>
