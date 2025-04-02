@@ -1,17 +1,41 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+import { removeUser } from "../utils/userSlice";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  useEffect(() => {
-    if (user) console.log(user);
-  }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${BASE_URL}/logout`, {}, {
+        withCredentials: true,
+      });
+      dispatch(removeUser());
+      return navigate("/login");
+    } catch (err) {
+      navigate("/error", {
+        state: {
+          error: {
+            message:
+              err.response?.data?.message || "An unexpected error occurred",
+            code: err.response?.status || 500,
+          },
+        },
+      });
+    }
+  };
 
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">🧑‍💻Tindev</Link>
+        <Link to="/" className="btn btn-ghost text-xl">
+          🧑‍💻Tindev
+        </Link>
       </div>
       <div className="flex gap-2">
         <input
@@ -52,7 +76,7 @@ const Navbar = () => {
                 <Link>Settings</Link>
               </li>
               <li>
-                <Link>Logout</Link>
+                <a onClick={handleLogout}>Logout</a>
               </li>
             </ul>
           </div>
