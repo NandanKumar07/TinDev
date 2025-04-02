@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: "https://bbdnitm.ac.in/tpo-contacts-old/dummy-image/",
+      default: "https://cdn.pixabay.com/photo/2022/03/11/06/14/indian-man-7061278_640.jpg",
       validate(value) {
         if (!validator.isURL(value)) {
           throw new Error("Enter a valid URL: " + value);
