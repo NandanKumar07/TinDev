@@ -18,7 +18,6 @@ const Feed = () => {
         withCredentials: true,
       });
       dispatch(addFeed(res.data));
-      console.log(res.data);
     } catch (err) {
       navigate("/error", {
         state: {
