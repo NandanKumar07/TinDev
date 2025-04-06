@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { removeUser } from "../utils/userSlice";
+import Connections from "./Connections";
+import Request from "./Request";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -73,7 +75,10 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link>Settings</Link>
+                <Link to="/connection">Connections</Link>
+              </li>
+              <li>
+                <Link to="/request">Requests</Link>
               </li>
               <li>
                 <a onClick={handleLogout}>Logout</a>

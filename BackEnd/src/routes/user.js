@@ -8,7 +8,7 @@ const connectionRequestSchema = require("../models/connectionRequestModel");
 
 const User = require("../models/user")
 
-const USER_SAFE_DATA = ["firstName", "lastName", "skills", "photoUrl", "about"];
+const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";;
 
 userRouter.get("/user/request/recieved", userAuth, async (req, res) => {
   try {
@@ -34,23 +34,33 @@ userRouter.get("/user/request/recieved", userAuth, async (req, res) => {
 userRouter.get("/user/connections", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-    const userConnections = await connectionRequestSchema
-      .find({
-        $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
-        status: "accepted",
-      })
+
+    const connectionRequests = await connectionRequestSchema.find({
+      $or: [
+        { toUserId: loggedInUser._id, status: "accepted" },
+        { fromUserId: loggedInUser._id, status: "accepted" },
+      ],
+    })
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
 
-    const data = userConnections.map((row) => {
-      if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
-        return row.toUserId;
-      }
-      return row.fromUserId;
-    });
-    res.json({ message: "YOUR ALL CONNECTIONS ARE HERE", data });
+    // console.log(connectionRequests);
+
+    const data = connectionRequests
+  .map((row) => {
+    // Check if populated users exist
+    if (!row.fromUserId || !row.toUserId) {
+      return null; // Skip invalid entries
+    }
+    return row.fromUserId._id.toString() === loggedInUser._id.toString()
+      ? row.toUserId
+      : row.fromUserId;
+  })
+  .filter((user) => user !== null);
+
+    res.json({ data });
   } catch (err) {
-    res.status(404).send("ERROR: " + err.message);
+    res.status(400).send({ message: err.message });
   }
 });
 
