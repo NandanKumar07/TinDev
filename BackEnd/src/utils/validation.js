@@ -1,5 +1,4 @@
 const validator = require("validator");
-const { validate } = require("../models/user");
 
 const validateSignUp = (req) => {
     const { firstName, lastName, emailId, password } = req.body;

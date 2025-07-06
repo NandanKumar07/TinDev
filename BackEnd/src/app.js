@@ -1,7 +1,7 @@
 const express = require("express");
 const DBconnect = require("./config/database");
 const cors = require("cors");
-
+const PORT = process.env.PORT;
 
 const app = express();
 app.use(express.json());
@@ -24,10 +24,7 @@ app.use('/', userRouter);
 
 DBconnect()
   .then(() => {
-    console.log("DB connection successfully established...");
-    app.listen(7777, () => {
-      console.log("Server is successfully listening on port 7777");
-    });
+    app.listen(PORT);
   })
   .catch((err) => {
     console.error("***Database cannot be connected***");

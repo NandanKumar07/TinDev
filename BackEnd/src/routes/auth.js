@@ -25,7 +25,6 @@ authRouter.post("/signup", async (req, res) => {
       about,
     } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
 
     // Create a new Instance of User model
     const user = new User({
