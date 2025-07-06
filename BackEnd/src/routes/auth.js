@@ -35,7 +35,7 @@ authRouter.post("/signup", async (req, res) => {
       age,
       gender,
       photoUrl,
-      about
+      about,
     });
 
     await user.save();
@@ -61,6 +61,9 @@ authRouter.post("/login", async (req, res) => {
 
       // Add the token to cookie and send the response back to the user
       res.cookie("token", token, {
+        httpOnly: true,
+        secure: true, // only works over HTTPS (which Render uses)
+        sameSite: "None", // required for cross-site cookies
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
 
