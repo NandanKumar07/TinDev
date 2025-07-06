@@ -7,6 +7,7 @@ import Feed from "./components/Feed";
 import Error from "./components/error";
 import Connections from "./components/Connections";
 import Request from "./components/Request";
+import Home from "./components/Home";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element = {<Body/>}>
+            <Route index element={<Home />} />
             <Route path="/feed" element = {<Feed/>}/>
             <Route path="/login" element = {<Login/>}/>
             <Route path="/profile" element = {<Profile/>}/>

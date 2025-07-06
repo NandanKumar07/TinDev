@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: "https://cdn.pixabay.com/photo/2022/03/11/06/14/indian-man-7061278_640.jpg",
+      default: "https://cdn.wallpapersafari.com/95/19/uFaSYI.jpg",
       validate(value) {
         if (!validator.isURL(value)) {
           throw new Error("Enter a valid URL: " + value);
@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
+        if (!["Male", "Female", "Others", "Not mentioned"].includes(value)) {
           throw new Error("Gender is not valid");
         }
       },
