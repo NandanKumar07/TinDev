@@ -66,36 +66,43 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
-    const loggedInUser = req.user;
+    const loggedInUserId = req.user._id;
     const page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
-    limit = limit > 50 ? 50 : limit;
+    limit = Math.min(limit, 50);
+    const skip = (page - 1) * limit;
 
-    const skip = (page - 1)*limit;
+    // Step 1: Get connection requests that should hide users
+    const connections = await connectionRequestSchema.find({
+      $or: [
+        { fromUserId: loggedInUserId },                      // user has sent request to someone
+        { status: "accepted", toUserId: loggedInUserId },    // someone accepted user
+        { status: "accepted", fromUserId: loggedInUserId },  // user accepted someone
+      ],
+    }).select("fromUserId toUserId");
 
-    const connectionRequest = await connectionRequestSchema
-      .find({
-        $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
-      })
-      .select("fromUserId toUserId")
-
+    // Step 2: Collect IDs to hide
     const hideUsersFromFeed = new Set();
-    connectionRequest.forEach((req) => {
-      hideUsersFromFeed.add(req.fromUserId);
-      hideUsersFromFeed.add(req.toUserId);
+    connections.forEach((req) => {
+      hideUsersFromFeed.add(req.fromUserId.toString());
+      hideUsersFromFeed.add(req.toUserId.toString());
+    });
+    hideUsersFromFeed.add(loggedInUserId.toString());
+
+    // Step 3: Find users NOT in hide list and NOT self
+    const usersToShow = await User.find({
+      _id: { $nin: Array.from(hideUsersFromFeed) },
     })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
 
-    const user = await User.find({
-      $and : [
-        {_id: {$nin: Array.from(hideUsersFromFeed)}},
-        {_id: {$ne: loggedInUser._id}}
-      ]
-    }).select(USER_SAFE_DATA).skip(skip).limit(limit);
-
-    res.send(user);
+    res.json({ users: usersToShow });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error("Feed error:", err.message);
+    res.status(500).json({ message: "Something went wrong!" });
   }
 });
+
 
 module.exports = userRouter;

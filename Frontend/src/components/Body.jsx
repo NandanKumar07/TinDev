@@ -13,35 +13,37 @@ const Body = () => {
   const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
+    console.log("Trying to fetch user...");
     try {
       const res = await axios.get(`${BASE_URL}/profile/view`, {
         withCredentials: true,
       });
+      console.log("User fetched:", res.data);
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.status === 401) {
+      console.error("Fetch user failed:", err.response?.status, err.response?.data);
+
+      if (err.response?.status === 401) {
         navigate("/login");
       } else {
         navigate("/error", {
           state: {
             error: {
-              message:
-                err.response?.data?.message || "An unexpected error occurred",
+              message: err.response?.data?.message || "An unexpected error occurred",
               code: err.response?.status || 500,
             },
           },
         });
       }
-
-      console.error(err);
     }
   };
 
   useEffect(() => {
-    if(!userData) {
+    if (!userData) {
       fetchUser();
     }
   }, []);
+
   return (
     <>
       <Navbar />

@@ -75,10 +75,10 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/connection">Connections</Link>
+                <Link to="/connections">Connections</Link>
               </li>
               <li>
-                <Link to="/request">Requests</Link>
+                <Link to="/requests">Requests</Link>
               </li>
               <li>
                 <a onClick={handleLogout}>Logout</a>
