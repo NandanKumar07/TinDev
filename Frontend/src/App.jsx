@@ -4,10 +4,10 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
-import Error from "./components/error";
 import Connections from "./components/Connections";
 import Request from "./components/Request";
 import Home from "./components/Home";
+import Error from "./components/Error";
 
 const App = () => {
   return (
