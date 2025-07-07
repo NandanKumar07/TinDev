@@ -1,11 +1,10 @@
-"use client"
-
 import { useState } from "react"
 import axios from "axios"
 import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import { useNavigate } from "react-router"
-import { BASE_URL } from "../utils/constants"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Login = () => {
   const [emailId, setEmailId] = useState("")

@@ -1,11 +1,10 @@
-"use client"
-
 import { useState } from "react"
 import UserCard from "./UserCard"
 import axios from "axios"
 import { useDispatch } from "react-redux"
-import { BASE_URL } from "../utils/constants"
 import { addUser } from "../utils/userSlice"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "")

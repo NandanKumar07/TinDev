@@ -1,14 +1,12 @@
-"use client"
-
 import { useEffect } from "react"
 import Navbar from "./Navbar"
 import { Outlet, useNavigate } from "react-router-dom"
 import Footer from "./Footer"
-import { BASE_URL } from "../utils/constants"
 import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
 import { addUser } from "../utils/userSlice"
-import Home from "./Home"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Body = () => {
   const dispatch = useDispatch()

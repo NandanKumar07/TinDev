@@ -1,12 +1,11 @@
-"use client"
-
 import { useEffect, useState } from "react"
-import { BASE_URL } from "../utils/constants"
 import { useDispatch, useSelector } from "react-redux"
 import { addFeed } from "../utils/feedSlice"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import UserCard from "./UserCard"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed)

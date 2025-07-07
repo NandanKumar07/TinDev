@@ -1,11 +1,10 @@
-"use client"
-
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
-import { BASE_URL } from "../utils/constants"
 import axios from "axios"
 import { removeUser } from "../utils/userSlice"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Navbar = () => {
   const navigate = useNavigate()

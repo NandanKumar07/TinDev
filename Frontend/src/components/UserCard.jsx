@@ -1,10 +1,9 @@
-"use client"
-
 import axios from "axios"
 import { useState } from "react"
-import { BASE_URL } from "../utils/constants"
 import { useDispatch } from "react-redux"
 import { removeUserFromFeed } from "../utils/feedSlice"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const UserCard = ({ user, onAction }) => {
   const { _id, firstName, lastName, bio, gender, age, photoUrl, about } = user

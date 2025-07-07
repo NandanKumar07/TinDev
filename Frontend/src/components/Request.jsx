@@ -1,10 +1,9 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { BASE_URL } from "../utils/constants"
 import { useSelector, useDispatch } from "react-redux"
 import { addRequest, removeRequest } from "../utils/requestSlice"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Request = () => {
   const requests = useSelector((store) => store.requests)
