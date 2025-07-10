@@ -97,7 +97,7 @@ const Navbar = () => {
                   />
                 </svg>
                 <span>Requests</span>
-                {/* Optional: Add notification badge */}
+                {/* notification badge */}
                 {pendingRequestCount > 0 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-rose-500 rounded-full"></div>}
               </Link>
             </div>
