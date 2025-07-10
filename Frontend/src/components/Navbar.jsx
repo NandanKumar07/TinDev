@@ -10,7 +10,10 @@ const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((store) => store.user)
+  const requests = useSelector((store) => store.requests);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  
+  const pendingRequestCount = requests?.length || 0;
 
   const handleLogout = async () => {
     try {
@@ -34,6 +37,7 @@ const Navbar = () => {
       })
     }
   }
+
 
   return (
     <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
@@ -94,7 +98,7 @@ const Navbar = () => {
                 </svg>
                 <span>Requests</span>
                 {/* Optional: Add notification badge */}
-                {/* <div className="absolute -top-1 -right-1 w-3 h-3 bg-rose-500 rounded-full"></div> */}
+                {pendingRequestCount > 0 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-rose-500 rounded-full"></div>}
               </Link>
             </div>
           )}
