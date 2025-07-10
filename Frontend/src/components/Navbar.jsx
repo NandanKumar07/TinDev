@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 import axios from "axios"
 import { removeUser } from "../utils/userSlice"
+import { addRequest } from "../utils/requestSlice"
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -37,6 +38,21 @@ const Navbar = () => {
       })
     }
   }
+
+  const fetchRequest = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/user/request/recieved`, {
+        withCredentials: true,
+      })
+      dispatch(addRequest(res.data.receivedRequests))
+    } catch (err) {
+      console.error("Error fetching requests:", err)
+    } 
+  }
+
+  useEffect(() => {
+    fetchRequest()
+  }, [user])
 
 
   return (

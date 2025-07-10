@@ -23,23 +23,6 @@ const Request = () => {
     }
   }
 
-  const fetchRequest = async () => {
-    setLoading(true)
-    try {
-      const res = await axios.get(`${BASE_URL}/user/request/recieved`, {
-        withCredentials: true,
-      })
-      dispatch(addRequest(res.data.receivedRequests))
-    } catch (err) {
-      console.error("Error fetching requests:", err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchRequest()
-  }, [])
 
   if (loading) {
     return (
