@@ -5,15 +5,13 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 7777;
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
-
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-  origin: CLIENT_URL,
+  origin: [process.env.CLIENT_URL, "http://localhost:5173"],
   credentials: true,
 }));
 

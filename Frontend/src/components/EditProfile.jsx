@@ -48,7 +48,6 @@ const EditProfile = ({ user }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 py-12 px-4">
-      {/* Success Toast */}
       {showToast && (
         <div className="fixed top-4 right-4 z-50 animate-slide-in-right">
           <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-emerald-700 shadow-xl">
@@ -67,7 +66,6 @@ const EditProfile = ({ user }) => {
       )}
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 bg-clip-text text-transparent mb-4">
             Edit Your Profile
@@ -76,7 +74,6 @@ const EditProfile = ({ user }) => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Preview Card */}
           <div className="order-2 lg:order-1">
             <div className="sticky top-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Preview</h2>
@@ -84,48 +81,62 @@ const EditProfile = ({ user }) => {
             </div>
           </div>
 
-          {/* Edit Form */}
           <div className="order-1 lg:order-2">
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Update Information</h2>
 
               <div className="space-y-6">
-                {/* First Name */}
-                <div className="space-y-2">
-                  <label className="text-gray-700 font-medium text-sm">First Name</label>
-                  <input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
-                    placeholder="Enter your first name"
-                  />
+                {/* First Name & Last Name */}
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-1 space-y-2">
+                    <label className="text-gray-700 font-medium text-sm">First Name</label>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      placeholder="Enter your first name"
+                    />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <label className="text-gray-700 font-medium text-sm">Last Name</label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
                 </div>
 
-                {/* Last Name */}
-                <div className="space-y-2">
-                  <label className="text-gray-700 font-medium text-sm">Last Name</label>
-                  <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
-                    placeholder="Enter your last name"
-                  />
-                </div>
-
-                {/* Age */}
-                <div className="space-y-2">
-                  <label className="text-gray-700 font-medium text-sm">Age</label>
-                  <input
-                    type="number"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
-                    placeholder="Enter your age"
-                    min="18"
-                    max="100"
-                  />
+                {/* Age & Gender */}
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-1 space-y-2">
+                    <label className="text-gray-700 font-medium text-sm">Age</label>
+                    <input
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      placeholder="Enter your age"
+                      min="18"
+                      max="100"
+                    />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <label className="text-gray-700 font-medium text-sm">Gender</label>
+                    <select
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                    >
+                      <option value="Not mentioned">Prefer not to say</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Photo URL */}
@@ -140,22 +151,7 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
 
-                {/* Gender */}
-                <div className="space-y-2">
-                  <label className="text-gray-700 font-medium text-sm">Gender</label>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
-                  >
-                    <option value="Not mentioned">Prefer not to say</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Other</option>
-                  </select>
-                </div>
-
-                {/* About */}
+                {/* About Me */}
                 <div className="space-y-2">
                   <label className="text-gray-700 font-medium text-sm">About Me</label>
                   <textarea
@@ -167,12 +163,10 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
 
-                {/* Error Message */}
                 {error && (
                   <div className="bg-red-50 border border-red-200 rounded-2xl p-3 text-red-600 text-sm">{error}</div>
                 )}
 
-                {/* Update Button */}
                 <button
                   onClick={saveProfile}
                   disabled={loading}
