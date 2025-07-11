@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"
-import { addRequest, removeRequest } from "../utils/requestSlice"
+import { removeRequest } from "../utils/requestSlice"
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -22,7 +22,6 @@ const Request = () => {
       setProcessingId(null)
     }
   }
-
 
   if (loading) {
     return (

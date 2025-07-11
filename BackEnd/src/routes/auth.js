@@ -76,6 +76,40 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
+
+authRouter.post("/guest", async (req, res) => {
+  try {
+    const guestEmail = process.env.GUEST_USER_EMAIL;
+    const guestPassword = process.env.GUEST_USER_PASSWORD;
+
+    const user = await User.findOne({ emailId: guestEmail });
+    if (!user) return res.status(404).send("Guest user not found");
+
+    const isPasswordValid = await user.validatePassword(guestPassword);
+
+    if (isPasswordValid) {
+      // Creating a JWT Token
+      const token = await user.getJWT();
+
+      // Add the token to cookie and send the response back to the user
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true, // only works over HTTPS (which Render uses)
+        sameSite: "None", // required for cross-site cookies
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+
+      res.send(user);
+    } else {
+      throw new Error("Invalid Credentials: ");
+    }
+  } catch (err) {
+    console.error("Guest login failed", err);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+
 authRouter.post("/logout", async (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),

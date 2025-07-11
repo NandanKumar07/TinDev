@@ -71,6 +71,29 @@ const Login = () => {
     }
   }
 
+  const handleGuestLogin = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await axios.post(`${BASE_URL}/guest`, {}, {
+        withCredentials: true,
+      });
+      dispatch(addUser(res.data));
+      showToastMessage("Welcome back! Login successful 🎉");
+      setTimeout(() => {
+        navigate("/feed");
+      }, 1000);
+    } catch (err) {
+      const errorMessage = err?.response?.data || "Something went wrong!";
+      setError(errorMessage);
+      showToastMessage(errorMessage, "error");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   const handleSignup = async () => {
     setLoading(true)
     setError("")
@@ -164,6 +187,17 @@ const Login = () => {
         {/* Form */}
         <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8">
           <div className="space-y-6">
+            <div className="flex justify-center items-center">
+              <p className="text-gray-600">
+                Login as a
+                <button
+                  onClick={handleGuestLogin}
+                  className="text-orange-500 cursor-pointer hover:text-orange-600 font-medium transition-colors duration-200 hover:underline px-2"
+                >
+                  Guest User
+                </button>
+              </p>
+            </div>
             {/* Signup Specific Fields */}
             {!isLoginForm && (
               <>
