@@ -1,10 +1,8 @@
 import { useState } from "react"
 import UserCard from "./UserCard"
-import axios from "axios"
+import axios from "../utils/axios";
 import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "")
@@ -23,7 +21,7 @@ const EditProfile = ({ user }) => {
     setError("")
     try {
       const res = await axios.patch(
-        `${BASE_URL}/profile/edit`,
+        `/profile/edit`,
         {
           firstName,
           lastName,
@@ -31,8 +29,7 @@ const EditProfile = ({ user }) => {
           gender,
           about,
           photoUrl,
-        },
-        { withCredentials: true },
+        }
       )
       dispatch(addUser(res?.data?.data))
       setShowToast(true)

@@ -3,10 +3,8 @@ import Navbar from "./Navbar"
 import { Outlet, useNavigate } from "react-router-dom"
 import Footer from "./Footer"
 import { useDispatch, useSelector } from "react-redux"
-import axios from "axios"
+import axios from "../utils/axios";
 import { addUser } from "../utils/userSlice"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Body = () => {
   const dispatch = useDispatch()
@@ -16,9 +14,7 @@ const Body = () => {
   const fetchUser = async () => {
     console.log("Trying to fetch user...")
     try {
-      const res = await axios.get(`${BASE_URL}/profile/view`, {
-        withCredentials: true,
-      })
+      const res = await axios.get(`/profile/view`)
       console.log("User fetched:", res.data)
       dispatch(addUser(res.data))
     } catch (err) {

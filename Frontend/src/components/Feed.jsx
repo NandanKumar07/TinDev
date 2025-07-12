@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addFeed } from "../utils/feedSlice"
-import axios from "axios"
+import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom"
 import UserCard from "./UserCard"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed)
@@ -18,7 +16,7 @@ const Feed = () => {
     if (feed?.users?.length > 0) return
     setLoading(true)
     try {
-      const res = await axios.get(`${BASE_URL}/feed`, {
+      const res = await axios.get(`/feed`, {
         withCredentials: true,
       })
       dispatch(addFeed(res.data))

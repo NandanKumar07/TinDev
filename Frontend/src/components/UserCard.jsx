@@ -1,9 +1,8 @@
-import axios from "axios"
+import axios from "../utils/axios"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { removeUserFromFeed } from "../utils/feedSlice"
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const UserCard = ({ user, onAction }) => {
   const { _id, firstName, lastName, bio, gender, age, photoUrl, about } = user
@@ -14,7 +13,7 @@ const UserCard = ({ user, onAction }) => {
   const handleLike = async () => {
     setIsLiked(true)
     try {
-      await axios.post(`${BASE_URL}/request/send/interested/${_id}`, {}, { withCredentials: true })
+      await axios.post(`/request/send/interested/${_id}`, {})
       dispatch(removeUserFromFeed(_id))
     } catch (error) {
       console.log(error)
@@ -29,7 +28,7 @@ const UserCard = ({ user, onAction }) => {
   const handleIgnore = async () => {
     setIsIgnored(true)
     try {
-      await axios.post(`${BASE_URL}/request/send/ignored/${_id}`, {}, { withCredentials: true })
+      await axios.post(`/request/send/ignored/${_id}`, {})
       dispatch(removeUserFromFeed(_id))
     } catch (error) {
       console.log(error)

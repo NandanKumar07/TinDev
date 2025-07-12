@@ -1,10 +1,8 @@
 import { useState } from "react"
-import axios from "axios"
+import axios from "../utils/axios"
 import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import { useNavigate } from "react-router"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Login = () => {
   const [emailId, setEmailId] = useState("")
@@ -47,14 +45,11 @@ const Login = () => {
     setError("")
     try {
       const res = await axios.post(
-        `${BASE_URL}/login`,
+        `/login`,
         {
           emailId,
           password,
-        },
-        {
-          withCredentials: true,
-        },
+        }
       )
       dispatch(addUser(res.data))
       showToastMessage("Welcome back! Login successful 🎉")
@@ -75,9 +70,7 @@ const Login = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.post(`${BASE_URL}/guest`, {}, {
-        withCredentials: true,
-      });
+      const res = await axios.post(`/guest`, {});
       dispatch(addUser(res.data));
       showToastMessage("Welcome back! Login successful 🎉");
       setTimeout(() => {
@@ -99,7 +92,7 @@ const Login = () => {
     setError("")
     try {
       const res = await axios.post(
-        `${BASE_URL}/signup`,
+        `/signup`,
         {
           emailId,
           password,
@@ -107,9 +100,6 @@ const Login = () => {
           lastName,
           age,
           gender,
-        },
-        {
-          withCredentials: true,
         },
       )
       dispatch(addUser(res.data))

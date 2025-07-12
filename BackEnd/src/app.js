@@ -5,13 +5,17 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 7777;
+const allowedOrigins = [
+  process.env.CLIENT_URL,                   // https://tindev‑by‑nandan.vercel.app
+  "http://localhost:5173"
+];
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-  origin: [process.env.CLIENT_URL, "http://localhost:5173"],
+  origin: allowedOrigins,
   credentials: true,
 }));
 

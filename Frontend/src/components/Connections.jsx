@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import axios from '../utils/axios';
 import { useDispatch, useSelector } from "react-redux"
 import { addConnections } from "../utils/connectionSlice"
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Connections = () => {
   const connections = useSelector((store) => store.connection)
@@ -13,9 +12,7 @@ const Connections = () => {
   const fetchConnections = async () => {
     setLoading(true)
     try {
-      const res = await axios.get(`${BASE_URL}/user/connections`, {
-        withCredentials: true,
-      })
+      const res = await axios.get(`/user/connections`)
       dispatch(addConnections(res.data.data))
     } catch (err) {
       console.error("Error fetching connections:", err)

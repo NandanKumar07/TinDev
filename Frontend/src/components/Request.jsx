@@ -1,9 +1,8 @@
 import { useState } from "react"
-import axios from "axios"
+import axios from "../utils/axios"
 import { useSelector, useDispatch } from "react-redux"
 import { removeRequest } from "../utils/requestSlice"
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Request = () => {
   const requests = useSelector((store) => store.requests)
@@ -14,7 +13,7 @@ const Request = () => {
   const reviewRequest = async (status, _id) => {
     setProcessingId(_id)
     try {
-      await axios.post(BASE_URL + "/" + "request/review/" + status + "/" + _id, {}, { withCredentials: true })
+      await axios.post("/request/review/" + status + "/" + _id, {})
       dispatch(removeRequest(_id))
     } catch (err) {
       console.error("Error reviewing request:", err)
