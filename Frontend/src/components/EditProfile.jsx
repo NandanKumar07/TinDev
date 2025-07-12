@@ -5,12 +5,14 @@ import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user?.firstName || "")
-  const [lastName, setLastName] = useState(user?.lastName || "")
+  const firstName = user?.firstName;
+  const lastName = user?.lastName;
   const [age, setAge] = useState(user?.age || 0)
   const [gender, setGender] = useState(user?.gender || "Not mentioned")
   const [about, setAbout] = useState(user?.about || "")
   const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "")
+  const [skills, setSkills] = useState(user?.skills || []);
+  const [skillInput, setSkillInput] = useState("");
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [showToast, setShowToast] = useState(false)
@@ -29,6 +31,7 @@ const EditProfile = ({ user }) => {
           gender,
           about,
           photoUrl,
+          skills
         }
       )
       dispatch(addUser(res?.data?.data))
@@ -42,6 +45,18 @@ const EditProfile = ({ user }) => {
       setLoading(false)
     }
   }
+
+  const addSkill = () => {
+    const trimmed = skillInput.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills([...skills, trimmed]);
+    }
+    setSkillInput("");
+  };
+
+  const removeSkill = (skill) => {
+    setSkills(skills.filter((s) => s !== skill));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 py-12 px-4">
@@ -74,7 +89,7 @@ const EditProfile = ({ user }) => {
           <div className="order-2 lg:order-1">
             <div className="sticky top-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Preview</h2>
-              <UserCard user={{ firstName, lastName, gender, age, photoUrl, about }} />
+              <UserCard user={{ firstName, lastName, gender, age, photoUrl, about, skills }} />
             </div>
           </div>
 
@@ -89,9 +104,9 @@ const EditProfile = ({ user }) => {
                     <label className="text-gray-700 font-medium text-sm">First Name</label>
                     <input
                       type="text"
+                      disabled
                       value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      className="w-full bg-gray-200 hover: border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 cursor-not-allowed"
                       placeholder="Enter your first name"
                     />
                   </div>
@@ -99,9 +114,9 @@ const EditProfile = ({ user }) => {
                     <label className="text-gray-700 font-medium text-sm">Last Name</label>
                     <input
                       type="text"
+                      disabled
                       value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      className="w-full bg-gray-200 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 cursor-not-allowed"
                       placeholder="Enter your last name"
                     />
                   </div>
@@ -147,6 +162,53 @@ const EditProfile = ({ user }) => {
                     placeholder="Enter your photo URL"
                   />
                 </div>
+
+                {/* Skills Input */}
+                <div className="space-y-2">
+                  <label className="text-gray-700 font-medium text-sm">Skills</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={skillInput}
+                      onChange={(e) => setSkillInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addSkill();
+                        }
+                      }}
+                      className="flex-1 bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
+                      placeholder="Add a skill and press Enter"
+                    />
+                    <button
+                      type="button"
+                      onClick={addSkill}
+                      className="bg-orange-400 hover:bg-orange-500 text-white rounded-2xl px-4 py-2 font-semibold transition-all duration-300"
+                    >
+                      Add
+                    </button>
+                  </div>
+
+                  {/* Show Skills */}
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                      >
+                        {skill}
+                        <button
+                          type="button"
+                          onClick={() => removeSkill(skill)}
+                          className="text-orange-500 hover:text-red-500 font-bold"
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
 
                 {/* About Me */}
                 <div className="space-y-2">

@@ -5,7 +5,7 @@ import { removeUserFromFeed } from "../utils/feedSlice"
 
 
 const UserCard = ({ user, onAction }) => {
-  const { _id, firstName, lastName, bio, gender, age, photoUrl, about } = user
+  const { _id, firstName, lastName, gender, age, photoUrl, about, skills } = user
   const [isLiked, setIsLiked] = useState(false)
   const [isIgnored, setIsIgnored] = useState(false)
   const dispatch = useDispatch();
@@ -95,7 +95,19 @@ const UserCard = ({ user, onAction }) => {
             )}
           </div>
 
-          {about && <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">{about}</p>}
+          {about && <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{about}</p>}
+
+          {/* show skills */}
+          <div className="flex flex-wrap gap-2 my-6">
+            {skills.map((skill, index) => (
+              <span
+                key={index}
+                className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm flex items-center gap-1"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
 
           {/* Action Buttons */}
           <div className="flex gap-4">
