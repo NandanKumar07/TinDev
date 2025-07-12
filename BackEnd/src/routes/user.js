@@ -71,28 +71,25 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     limit = Math.min(limit, 50);
     const skip = (page - 1) * limit;
 
-    // Step 1: Get connection requests that should hide users
-    const connections = await connectionRequestSchema
-      .find({
-        $or: [
-          { fromUserId: loggedInUserId }, // user has sent request to someone
-          { status: "accepted", toUserId: loggedInUserId }, // someone accepted user
-          { status: "accepted", fromUserId: loggedInUserId }, // user accepted someone
-        ],
-      })
-      .select("fromUserId toUserId");
+    // Get all connection requests involving this user
+    const allRequests = await connectionRequestSchema.find({
+      $or:[
+        {fromUserId: loggedInUserId},
+        {toUserId: loggedInUserId},
+      ],
+    }).select("fromUserId toUserId");
 
-    // Step 2: Collect IDs to hide
-    const hideUsersFromFeed = new Set();
-    connections.forEach((req) => {
-      hideUsersFromFeed.add(req.fromUserId.toString());
-      hideUsersFromFeed.add(req.toUserId.toString());
-    });
-    hideUsersFromFeed.add(loggedInUserId.toString());
+    // Build exclusion set
+    const excludedUserIds = new Set([loggedInUserId.toString()]);
+
+    allRequests.forEach((req) => {
+      excludedUserIds.add(req.fromUserId.toString());
+      excludedUserIds.add(req.toUserId.toString());
+    })
 
     // Step 3: Find users NOT in hide list and NOT self
     const usersToShow = await User.find({
-      _id: { $nin: Array.from(hideUsersFromFeed) },
+      _id: { $nin: [...excludedUserIds, loggedInUserId.toString()] },
     })
       .select(USER_SAFE_DATA)
       .skip(skip)

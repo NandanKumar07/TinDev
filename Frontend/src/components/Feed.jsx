@@ -16,9 +16,7 @@ const Feed = () => {
     if (feed?.users?.length > 0) return
     setLoading(true)
     try {
-      const res = await axios.get(`/feed`, {
-        withCredentials: true,
-      })
+      const res = await axios.get(`/feed`)
       dispatch(addFeed(res.data))
     } catch (err) {
       navigate("/error", {

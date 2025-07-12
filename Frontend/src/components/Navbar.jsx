@@ -38,6 +38,7 @@ const Navbar = () => {
     try {
       const res = await axios.get(`/user/request/recieved`)
       dispatch(addRequest(res.data.receivedRequests))
+      console.log(res);
     } catch (err) {
       console.error("Error fetching requests:", err)
     } 
